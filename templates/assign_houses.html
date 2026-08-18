@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Zeromix | Assign Houses</title>
+
+<style>
+body{font-family:'Segoe UI';background:#f4f6f9;}
+
+.topbar{
+    background:#4a7c3a;
+    color:white;
+    padding:18px 40px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.main{max-width:900px;margin:60px auto;}
+
+.card{
+    background:white;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.06);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th, td{
+    padding:14px;
+    text-align:center;
+    border-bottom:1px solid #eee;
+}
+
+th{
+    background:#4a7c3a;
+    color:white;
+}
+
+.assign-btn{
+    background:#4a7c3a;
+    color:white;
+    border:none;
+    padding:6px 14px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.assign-btn:hover{
+    background:#2e7d32;
+}
+
+.current-area{
+    background:#e8f5e9;
+    padding:10px;
+    border-radius:8px;
+    margin-bottom:15px;
+    color:#2e7d32;
+    font-weight:600;
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+    <h2>Assign Houses to {{ worker }}</h2>
+    <a href="{{ url_for('manage_workers') }}" style="color:white;">← Back</a>
+</div>
+
+<div class="main">
+
+<div class="card">
+
+{% if current_area %}
+<div class="current-area">
+    Currently Assigned Area: {{ current_area }}
+</div>
+{% endif %}
+
+<table>
+{% set available_areas = [] %}
+{% for group in address_groups %}
+    {% if group[0] != current_area %}
+        {% set _ = available_areas.append(group[0]) %}
+    {% endif %}
+{% endfor %}
+
+{% if current_area and available_areas|length == 0 %}
+    <div style="
+        margin-top:20px;
+        padding:15px;
+        background:#fff3cd;
+        border-radius:8px;
+        color:#856404;
+        font-weight:500;
+    ">
+        No other areas available for assignment.
+    </div>
+{% endif %}
+<tr>
+    <th>Address</th>
+    <th>No. of Houses</th>
+    <th>Action</th>
+</tr>
+
+{% for group in address_groups %}
+<tr>
+    <td>{{ group[0] }}</td>
+    <td>{{ group[1] }}</td>
+
+    <td>
+        {% if not current_area %}
+            <!-- FIRST TIME ASSIGN -->
+            <form method="POST">
+                <input type="hidden" name="address" value="{{ group[0] }}">
+                <button type="submit" class="assign-btn">
+                    Assign
+                </button>
+            </form>
+
+        {% elif group[0] == current_area %}
+            <!-- CURRENT AREA -->
+            <span class="assigned-text">✔ Assigned</span>
+
+        {% else %}
+            <!-- CHANGE AREA -->
+            <form method="POST">
+                <input type="hidden" name="address" value="{{ group[0] }}">
+                <button type="submit" class="assign-btn">
+                    Change To
+                </button>
+            </form>
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+
+</table>
+
+
+</div>
+</div>
+
+</body>
+</html>

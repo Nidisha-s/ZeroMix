@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pending Houses | Zeromix</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f6f9;
+        }
+
+        .container {
+            width: 90%;
+            margin: 40px auto;
+        }
+
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #2f6b2f;
+            margin: 0;
+        }
+
+        .count-badge {
+            background-color: #2f6b2f;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #2f6b2f;
+            color: white;
+            padding: 14px;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .pending-badge {
+            background-color: #f6e7c1;
+            color: #856404;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .completed-badge {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .upload-btn {
+            background-color: #2f6b2f;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.2s ease;
+        }
+
+        .upload-btn:hover {
+            background-color: #245524;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 15px;
+            color: #2f6b2f;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        h3 {
+            color: #2f6b2f;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <a href="{{ url_for('worker_dashboard') }}" class="back-link">
+        ← Back to Dashboard
+    </a>
+
+    <!-- Pending Section -->
+    <div class="top-section">
+        <h2>Pending Houses</h2>
+        {% if pending_houses %}
+        <div class="count-badge">
+            {{ pending_houses|length }} Pending
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="card">
+
+        {% if pending_houses and pending_houses|length > 0 %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Household</th>
+                    <th>Address</th>
+                    <th>Status</th>
+                    <th style="text-align:right;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for house in pending_houses %}
+                <tr>
+                    <td>{{ house.username }}</td>
+                    <td>{{ house.address }}</td>
+                    <td>
+                        <span class="pending-badge">
+                            Pending Today
+                        </span>
+                    </td>
+                    <td style="text-align:right;">
+						{% if house.username in completed_usernames %}
+							<button disabled class="upload-btn" style="background:#aaa; cursor:not-allowed;">
+								Completed
+							</button>
+						{% else %}
+							<a href="{{ url_for('upload_waste', source='pending') }}" class="upload-btn">
+								Upload Waste
+							</a>
+						{% endif %}
+					</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            🎉 No pending houses!
+        </div>
+        {% endif %}
+
+    </div>
+
+    <!-- Completed Section -->
+    {% if completed_houses and completed_houses|length > 0 %}
+    <h3>Completed Today</h3>
+
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Household</th>
+                    <th>Address</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for house in completed_houses %}
+                <tr>
+                    <td>{{ house.username }}</td>
+                    <td>{{ house.address }}</td>
+                    <td>
+                        <span class="completed-badge">
+                            Completed
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

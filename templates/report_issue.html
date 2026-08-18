@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Report Issue</title>
+    <style>
+        body { font-family: 'Segoe UI'; background:#f4f6f9; }
+        .container { width:50%; margin:50px auto; background:white; padding:30px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1);}
+        h2 { color:#2f6b2f; }
+        input, select, textarea {
+            width:100%;
+            padding:10px;
+            margin-top:10px;
+            margin-bottom:20px;
+            border-radius:8px;
+            border:1px solid #ccc;
+        }
+        button {
+            background:#2f6b2f;
+            color:white;
+            padding:10px 20px;
+            border:none;
+            border-radius:25px;
+            cursor:pointer;
+        }
+        button:hover { background:#245524; }
+		.back-link{
+            display:block;
+            margin-top:15px;
+            font-size:13px;
+            color:#777;
+            text-decoration:none;
+        }
+
+        .back-link:hover{
+            color:#2e7d32;
+        }
+    </style>
+</head>
+<body>
+	<a href="{{ url_for('worker_dashboard') }}" class="back-link">
+        ← Back to Dashboard
+    </a>
+<div class="container">
+    <h2>Report Issue</h2>
+
+    <form method="POST">
+
+        <label>Household</label>
+        <select name="household" required>
+            {% for house in houses %}
+            <option value="{{ house[0] }}">{{ house[0] }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Issue Type</label>
+        <select name="issue_type" required>
+            <option>Locked House</option>
+            <option>Damaged QR</option>
+            <option>Waste Not Kept Outside</option>
+            <option>Other</option>
+        </select>
+
+        <label>Description</label>
+        <textarea name="description" rows="4"></textarea>
+
+        <button type="submit">Submit Report</button>
+
+    </form>
+</div>
+
+</body>
+</html>

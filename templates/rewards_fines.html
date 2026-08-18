@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Zeromix | Rewards & Fines</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    color:#333;
+}
+
+/* HEADER */
+.header{
+    background:#2e7d32;
+    color:white;
+    padding:18px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.back-btn{
+    background:white;
+    color:#2e7d32;
+    border:none;
+    padding:6px 14px;
+    border-radius:20px;
+    cursor:pointer;
+    font-weight:500;
+}
+
+.back-btn:hover{
+    background:#e8f5e9;
+}
+
+/* MAIN */
+.main{
+    max-width:1200px;
+    margin:40px auto;
+    padding:0 30px;
+}
+
+/* SUMMARY CARDS */
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+    margin-bottom:30px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:14px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.06);
+    text-align:center;
+    transition:0.3s ease;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 14px 30px rgba(0,0,0,0.12);
+}
+
+.card h3{
+    font-size:26px;
+    color:#2e7d32;
+    margin-bottom:8px;
+}
+
+.card p{
+    font-size:14px;
+    color:#666;
+}
+
+/* FILTER BAR */
+.filter-bar{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.05);
+    margin-bottom:25px;
+}
+
+.filter-bar form{
+    display:flex;
+    flex-wrap:wrap;
+    gap:18px;
+    align-items:flex-end;
+}
+
+.filter-group{
+    display:flex;
+    flex-direction:column;
+    font-size:13px;
+}
+
+.filter-group label{
+    margin-bottom:6px;
+    font-weight:500;
+    color:#555;
+}
+
+.filter-group input,
+.filter-group select{
+    padding:7px 10px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:13px;
+}
+
+.filter-group input:focus,
+.filter-group select:focus{
+    border-color:#2e7d32;
+    outline:none;
+}
+
+.apply-btn{
+    background:#2e7d32;
+    color:white;
+    border:none;
+    padding:8px 18px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:13px;
+}
+
+.apply-btn:hover{
+    background:#1b5e20;
+}
+
+.reset-btn{
+    background:#ddd;
+    color:#333;
+    border:none;
+    padding:8px 18px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:13px;
+}
+
+/* FILTER TABS */
+.filters{
+    display:flex;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.filters button{
+    padding:8px 18px;
+    border:none;
+    border-radius:20px;
+    background:#e8f5e9;
+    cursor:pointer;
+    font-weight:500;
+    color:#2e7d32;
+    transition:0.2s;
+}
+
+.filters button.active{
+    background:#2e7d32;
+    color:white;
+}
+
+/* SECTION */
+.section{
+    background:white;
+    padding:25px;
+    border-radius:14px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.06);
+    margin-bottom:35px;
+}
+
+.section h3{
+    margin-bottom:15px;
+    color:#2e7d32;
+}
+
+/* TABLE */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th, td{
+    padding:12px;
+    text-align:center;
+    border-bottom:1px solid #eee;
+}
+
+th{
+    background:#2e7d32;
+    color:white;
+}
+
+tr:hover{
+    background:#f1f8f4;
+}
+
+/* BADGES */
+.warning{ color:#ef6c00; font-weight:600; }
+.fine{ color:#d32f2f; font-weight:600; }
+.reward{ color:#2e7d32; font-weight:600; }
+
+/* GRAPH */
+.graph-box{
+    background:white;
+    padding:25px;
+    border-radius:14px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.06);
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="header">
+    <h2>Zeromix | Rewards & Fines Overview</h2>
+    <a href="{{ url_for('admin_dash') }}">
+        <button class="back-btn">← Back</button>
+    </a>
+</div>
+
+<div class="main">
+
+<!-- SUMMARY CARDS -->
+<div class="cards">
+    <div class="card">
+        <h3>₹ {{ total_fines_collected }}</h3>
+        <p>Total Fines Collected</p>
+    </div>
+
+    <div class="card">
+        <h3>{{ total_reward_points }}</h3>
+        <p>Total Reward Points Issued</p>
+    </div>
+
+    <div class="card">
+        <h3>{{ total_warnings }}</h3>
+        <p>Total Warnings Given</p>
+    </div>
+
+    <div class="card">
+        <h3>{{ final_warning_households }}</h3>
+        <p>Households on Final Warning</p>
+    </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+<form method="GET" action="{{ url_for('rewards_fines') }}">
+
+    <div class="filter-group">
+        <label>From Date</label>
+        <input type="date" name="from_date"
+               value="{{ request.args.get('from_date','') }}">
+    </div>
+
+    <div class="filter-group">
+        <label>To Date</label>
+        <input type="date" name="to_date"
+               value="{{ request.args.get('to_date','') }}">
+    </div>
+
+    <div class="filter-group">
+        <label>Household</label>
+        <select name="household">
+            <option value="">All</option>
+            {% for h in household_list %}
+                <option value="{{ h }}"
+                {% if request.args.get('household') == h %}selected{% endif %}>
+                    {{ h }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <button type="submit" class="apply-btn">Apply</button>
+    <a href="{{ url_for('rewards_fines') }}">
+        <button type="button" class="reset-btn">Reset</button>
+    </a>
+
+</form>
+</div>
+
+<!-- FILTER TABS -->
+<div class="filters">
+    <button onclick="showSection(event,'summary')" class="active">Summary</button>
+    <button onclick="showSection(event,'leaderboard')">Leaderboard</button>
+    <button onclick="showSection(event,'analytics')">Analytics</button>
+</div>
+
+<!-- SUMMARY TABLE -->
+<div id="summary-section">
+<div class="section">
+    <h3>Fine Summary</h3>
+    <table>
+        <tr>
+            <th>Household</th>
+            <th>Warnings</th>
+            <th>Total Fines (₹)</th>
+        </tr>
+        {% for h in fine_summary %}
+        <tr>
+            <td>{{ h[0] }}</td>
+            <td class="warning">{{ h[1] }}</td>
+            <td class="fine">₹ {{ h[2] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</div>
+
+<!-- LEADERBOARD -->
+<div id="leaderboard-section" style="display:none;">
+<div class="section">
+    <h3>Reward Leaderboard</h3>
+    <table>
+        <tr>
+            <th>Household</th>
+            <th>Reward Points</th>
+        </tr>
+        {% for r in reward_summary %}
+        <tr>
+            <td>{{ r[0] }}</td>
+            <td class="reward">{{ r[1] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</div>
+
+<!-- ANALYTICS -->
+<div id="analytics-section" style="display:none;">
+<div class="graph-box">
+    <h3 style="color:#2e7d32;margin-bottom:15px;">
+        Penalty & Reward Analytics
+    </h3>
+    <canvas id="analyticsChart" height="80"></canvas>
+</div>
+</div>
+
+</div>
+
+<script>
+function showSection(event, section){
+    document.getElementById('summary-section').style.display="none";
+    document.getElementById('leaderboard-section').style.display="none";
+    document.getElementById('analytics-section').style.display="none";
+
+    document.querySelectorAll('.filters button')
+        .forEach(btn=>btn.classList.remove('active'));
+
+    document.getElementById(section+'-section').style.display="block";
+    event.target.classList.add("active");
+}
+
+const ctx=document.getElementById('analyticsChart').getContext('2d');
+
+new Chart(ctx,{
+    type:'bar',
+    data:{
+        labels:['Fines','Rewards','Warnings'],
+        datasets:[{
+            data:[
+                {{ total_fines_collected }},
+                {{ total_reward_points }},
+                {{ total_warnings }}
+            ],
+            backgroundColor:['#d32f2f','#2e7d32','#ef6c00'],
+            borderRadius:6
+        }]
+    },
+    options:{
+        responsive:true,
+        plugins:{legend:{display:false}},
+        scales:{y:{beginAtZero:true}}
+    }
+});
+</script>
+
+</body>
+</html>

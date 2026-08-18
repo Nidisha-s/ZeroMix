@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Zeromix | Login</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+        linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+        url("{{ url_for('static', filename='images/city2.jpg') }}") center/cover no-repeat;
+}
+
+/* LOGIN CARD */
+.login-container{
+    background:#f4fbf6;
+    padding:45px 40px;
+    width:380px;
+    border-radius:18px;
+    box-shadow:0 18px 40px rgba(0,0,0,0.25);
+    text-align:center;
+    animation:fadeInUp 0.8s ease;
+}
+
+/* LOGO */
+.login-logo{
+    width:120px;
+    margin-bottom:15px;
+}
+
+/* HEADING */
+.login-container h2{
+    color:#2e7d32;
+    margin-bottom:25px;
+    font-size:24px;
+}
+
+/* INPUTS */
+.login-container select,
+.login-container input{
+    width:100%;
+    padding:13px;
+    margin:10px 0;
+    border-radius:10px;
+    border:1px solid #ccc;
+    font-size:14px;
+    transition:border-color 0.3s, box-shadow 0.3s;
+}
+
+.login-container select:focus,
+.login-container input:focus{
+    outline:none;
+    border-color:#2e7d32;
+    box-shadow:0 0 0 2px rgba(46,125,50,0.15);
+}
+
+/* BUTTON */
+.login-container button{
+    width:100%;
+    padding:13px;
+    margin-top:18px;
+    background:#2e7d32;
+    color:white;
+    border:none;
+    border-radius:30px;
+    font-size:15px;
+    cursor:pointer;
+    transition:all 0.3s ease;
+}
+
+.login-container button:hover{
+    background:#1b5e20;
+    transform:translateY(-2px);
+    box-shadow:0 6px 18px rgba(46,125,50,0.35);
+}
+
+/* BACK LINK */
+.back-link{
+    margin-top:18px;
+    display:inline-block;
+    font-size:13px;
+    color:#555;
+    text-decoration:none;
+}
+
+.back-link:hover{
+    color:#2e7d32;
+    text-decoration:underline;
+}
+
+/* ANIMATION */
+@keyframes fadeInUp{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* RESPONSIVE */
+@media (max-width:480px){
+    .login-container{
+        width:90%;
+        padding:35px 25px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-container">
+	<form method="POST" action="/login">
+	<img src="{{ url_for('static', filename='images/logonew.png') }}" class="login-logo" alt="Zeromix Logo">
+    <select name="role" required>
+		<option value="">Select Role</option>
+		<option value="Worker">Worker</option>
+		<option value="Admin">Admin</option>
+		<option value="Household">Household</option>
+	</select>
+	<input type="text" name="username" placeholder="Username / ID" required>
+    <input type="password" name="password" placeholder="Password" required>
+
+    <button type="submit">Login</button>
+    <br>
+    <a href="/" class="back-link">← Back to Home</a>
+	</form>
+</div>
+
+</body>
+</html>

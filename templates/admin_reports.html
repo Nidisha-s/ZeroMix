@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Zeromix | AI Reports</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    background:#f7f9f8;
+    color:#222;
+}
+
+/* HEADER */
+.header{
+    background:#2e7d32;
+    color:white;
+    padding:20px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.header a{
+    text-decoration:none;
+}
+
+/* MAIN */
+.main{
+    max-width:1200px;
+    margin:40px auto;
+    padding:0 30px;
+}
+
+/* CARD */
+.card{
+    background:white;
+    padding:30px;
+    border-radius:16px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* TABLE */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th, td{
+    padding:14px;
+    border-bottom:1px solid #eee;
+    text-align:center;
+}
+
+th{
+    background:#2e7d32;
+    color:white;
+}
+
+tr:hover{
+    background:#f1f8f4;
+}
+
+/* STATUS BADGES */
+.clean{
+    background:#e8f5e9;
+    color:#2e7d32;
+    padding:5px 10px;
+    border-radius:12px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.violation{
+    background:#ffebee;
+    color:#d32f2f;
+    padding:5px 10px;
+    border-radius:12px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.warning{
+    background:#fff3e0;
+    color:#ef6c00;
+    padding:5px 10px;
+    border-radius:12px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.fine-issued{
+    background:#ffebee;
+    color:#b71c1c;
+    padding:5px 10px;
+    border-radius:12px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.reward-issued{
+    background:#e8f5e9;
+    color:#1b5e20;
+    padding:5px 10px;
+    border-radius:12px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.not-issued{
+    background:#e3f2fd;
+    color:#1565c0;
+    padding:5px 10px;
+    border-radius:12px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+/* BUTTONS */
+.fine-btn{
+    background:#d32f2f;
+    color:white;
+    padding:6px 12px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:13px;
+}
+
+.fine-btn:hover{
+    background:#9a0007;
+}
+
+.reward-btn{
+    background:#2e7d32;
+    color:white;
+    padding:6px 12px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:13px;
+}
+
+.reward-btn:hover{
+    background:#1b5e20;
+}
+
+.view-btn{
+    background:#1565c0;
+    color:white;
+    padding:6px 12px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:13px;
+}
+
+.view-btn:hover{
+    background:#0d47a1;
+}
+
+.back-btn{
+    padding:8px 16px;
+    background:white;
+    color:#2e7d32;
+    border:2px solid #2e7d32;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+.back-btn:hover{
+    background:#2e7d32;
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h2>Zeromix | AI Verification Reports</h2>
+    <a href="{{ url_for('admin_dash') }}">
+        <button class="back-btn">← Back to Dashboard</button>
+    </a>
+</div>
+
+<div class="main">
+    <div class="card">
+
+        <h3>Waste Verification Records</h3>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Worker</th>
+                <th>Household</th>
+                <th>Image</th>
+                <th>Status</th>
+                <th>Penalty / Reward Status</th>
+                <th>Action</th>
+            </tr>
+
+            {% for r in records %}
+            <tr>
+                <td>{{ r[0] }}</td>
+                <td>{{ r[1] }}</td>
+                <td>{{ r[2] }}</td>
+
+                <!-- VIEW IMAGE -->
+                <td>
+                    <a href="{{ url_for('static', filename=r[3]) }}" target="_blank">
+                        <button class="view-btn">View</button>
+                    </a>
+                </td>
+
+                <!-- CLEAN / VIOLATION -->
+                <td>
+                    {% if r[4] == "Clean" %}
+                        <span class="clean">Clean</span>
+                    {% elif r[4] == "Violation" %}
+                        <span class="violation">Violation</span>
+                    {% endif %}
+                </td>
+
+                <!-- STATUS -->
+                <td>
+                    {% if r[5] == "Warning Issued" %}
+                        <span class="warning">Warning Issued</span>
+                    {% elif r[5] == "Fine Issued" %}
+                        <span class="fine-issued">Fine Issued (₹500)</span>
+                    {% elif r[6] == "Reward Issued" %}
+                        <span class="reward-issued">Reward +10</span>
+                    {% else %}
+                        <span class="not-issued">Not Processed</span>
+                    {% endif %}
+                </td>
+
+                <!-- ACTION -->
+                <td>
+                    {% if r[4] == "Violation" and r[5] == "Not Issued" %}
+                        <a href="{{ url_for('approve_fine', id=r[0]) }}">
+                            <button class="fine-btn">Approve Violation</button>
+                        </a>
+
+                    {% elif r[4] == "Clean" and r[6] == "Not Issued" %}
+                        <a href="{{ url_for('approve_reward', id=r[0]) }}">
+                            <button class="reward-btn">Approve Reward</button>
+                        </a>
+
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+</div>
+
+</body>
+</html>

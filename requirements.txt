@@ -1,0 +1,12 @@
+
+| Package                  | Used for                               |
+| ------------------------ | -------------------------------------- |
+| `Flask`                  | Web application                        |
+| `mysql-connector-python` | MySQL database connection              |
+| `tensorflow`             | AI waste classification                |
+| `opencv-python`          | Image processing                       |
+| `numpy`                  | Image/numerical processing             |
+| `Pillow`                 | Image handling + QR generation support |
+| `Werkzeug`               | Secure filenames + password hashing    |
+| `python-dotenv`          | Reading `.env`                         |
+| `qrcode[pil]`            | Household QR code generation           |

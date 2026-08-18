@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Zeromix | Worker Performance</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+
+/* HEADER */
+.topbar{
+    background:#4a7c3a;
+    color:white;
+    padding:18px 40px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.main{
+    max-width:1000px;
+    margin:60px auto;
+}
+
+/* CARD GRID */
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:white;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.06);
+    text-align:center;
+}
+
+.card h2{
+    font-size:32px;
+    color:#4a7c3a;
+    margin-bottom:10px;
+}
+
+.card p{
+    font-size:14px;
+    color:#666;
+}
+
+.performance{
+    margin-top:40px;
+    background:white;
+    padding:30px;
+    border-radius:18px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.06);
+    text-align:center;
+}
+
+.performance h1{
+    font-size:48px;
+    color:#4a7c3a;
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+    <h2>Zeromix | Worker Performance</h2>
+    <a href="{{ url_for('manage_workers') }}" style="color:white;">← Back</a>
+</div>
+
+<div class="main">
+
+<h3 style="margin-bottom:30px;color:#4a7c3a;">
+    Performance Report for: <strong>{{ worker }}</strong>
+</h3>
+
+<div class="cards">
+
+    <div class="card">
+        <h2>{{ total_uploads }}</h2>
+        <p>Total Uploads</p>
+    </div>
+
+    <div class="card">
+        <h2>{{ clean_count }}</h2>
+        <p>Clean Records</p>
+    </div>
+
+    <div class="card">
+        <h2>{{ violation_count }}</h2>
+        <p>Violations</p>
+    </div>
+
+</div>
+
+<div class="performance">
+    <p>Overall Performance</p>
+    <h1>{{ performance }}%</h1>
+</div>
+
+</div>
+
+</body>
+</html>

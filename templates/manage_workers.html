@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Zeromix | Manage Workers</title>
+
+<style>
+body{background:#f4f6f9;font-family:'Segoe UI';}
+.topbar{background:#4a7c3a;color:white;padding:18px 40px;display:flex;justify-content:space-between;}
+.main{max-width:1150px;margin:50px auto;}
+.card{background:white;padding:30px;border-radius:18px;box-shadow:0 8px 25px rgba(0,0,0,0.06);margin-bottom:40px;}
+table{width:100%;border-collapse:collapse;}
+th,td{padding:14px;text-align:center;border-bottom:1px solid #eee;}
+th{background:#4a7c3a;color:white;}
+tr:hover{background:#f1f8f4;}
+
+.btn{padding:6px 14px;border:none;border-radius:6px;cursor:pointer;font-size:13px;}
+.add-btn{background:#4a7c3a;color:white;}
+.update-btn{background:#2f5fb3;color:white;}
+.save-btn{background:#4a7c3a;color:white;}
+.cancel-btn{background:#999;color:white;}
+.delete-btn{background:#c0392b;color:white;}
+.view-btn{background:#1565c0;color:white;}
+.assign-btn{background:#2e7d32;color:white;}
+</style>
+
+<script>
+function enableEdit(id){
+    document.getElementById("display-"+id).style.display="none";
+    document.getElementById("edit-"+id).style.display="table-row";
+}
+function cancelEdit(id){
+    document.getElementById("display-"+id).style.display="table-row";
+    document.getElementById("edit-"+id).style.display="none";
+}
+</script>
+</head>
+
+<body>
+
+<div class="topbar">
+    <h2>Zeromix | Manage Workers</h2>
+    <a href="{{ url_for('admin_dash') }}" style="color:white;">← Back</a>
+</div>
+
+<div class="main">
+
+<!-- ADD WORKER -->
+<div class="card">
+<h3 style="color:#4a7c3a;margin-bottom:20px;">Add Worker</h3>
+<form method="POST" style="display:flex;gap:15px;">
+    <input type="hidden" name="action" value="add">
+    <input type="text" name="username" placeholder="Username" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <input type="text" name="phone" placeholder="Phone Number" required>
+    <button type="submit" class="btn add-btn">Add Worker</button>
+</form>
+</div>
+
+<!-- WORKERS TABLE -->
+<div class="card">
+<h3 style="color:#4a7c3a;margin-bottom:20px;">Existing Workers</h3>
+
+<table>
+<tr>
+    <th>ID</th>
+    <th>Username</th>
+    <th>Phone</th>
+    <th>Assigned Area</th>
+    <th>Performance</th>
+    <th>Action</th>
+    <th>Delete</th>
+</tr>
+
+{% for w in workers %}
+
+<!-- DISPLAY ROW -->
+<tr id="display-{{ w[0] }}">
+    <td>{{ w[0] }}</td>
+    <td>{{ w[1] }}</td>
+    <td>{{ w[2] }}</td>
+
+    <td>
+    {% if w[4] %}
+        <span style="color:#4a7c3a;font-weight:600;">
+            {{ w[4] }}
+        </span>
+    {% else %}
+        <a href="{{ url_for('assign_houses', worker=w[1]) }}">
+            <button class="btn assign-btn">Assign</button>
+        </a>
+    {% endif %}
+	</td>
+
+    <td>
+        <a href="{{ url_for('worker_performance', worker=w[1]) }}">
+            <button class="btn view-btn">View</button>
+        </a>
+    </td>
+
+    <td>
+        <button class="btn update-btn" onclick="enableEdit('{{ w[0] }}')">
+            Update
+        </button>
+    </td>
+
+    <td>
+        {% if w[4] %}
+            <button class="btn delete-btn" disabled>Area Assigned</button>
+        {% else %}
+            <a href="{{ url_for('delete_worker', id=w[0]) }}">
+                <button class="btn delete-btn">Delete</button>
+            </a>
+        {% endif %}
+    </td>
+</tr>
+
+<!-- EDIT ROW -->
+<tr id="edit-{{ w[0] }}" style="display:none;">
+<form method="POST">
+<input type="hidden" name="action" value="update">
+<input type="hidden" name="id" value="{{ w[0] }}">
+
+<td>{{ w[0] }}</td>
+<td><input type="text" name="username" value="{{ w[1] }}" required></td>
+<td><input type="text" name="phone" value="{{ w[2] }}" required></td>
+
+<td>
+    <a href="{{ url_for('assign_houses', worker=w[1]) }}">
+        <button type="button" class="btn assign-btn">
+            Change Area
+        </button>
+    </a>
+</td>
+
+<td>-</td>
+
+<td>
+    <button type="submit" class="btn save-btn">Save</button>
+    <button type="button" onclick="cancelEdit('{{ w[0] }}')" class="btn cancel-btn">
+        Cancel
+    </button>
+</td>
+
+<td>-</td>
+
+</form>
+</tr>
+
+{% endfor %}
+</table>
+
+</div>
+</div>
+
+</body>
+</html>

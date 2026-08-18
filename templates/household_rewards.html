@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Zeromix | Rewards & Fines</title>
+
+<style>
+body{
+    font-family:'Segoe UI', sans-serif;
+    background:linear-gradient(135deg,#e8f5e9,#e3f2fd,#f1f8e9);
+    padding:40px;
+}
+
+.container{
+    max-width:800px;
+    margin:auto;
+}
+
+.header{
+    background:linear-gradient(135deg,#2e7d32,#43a047);
+    color:white;
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:30px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.1);
+    margin-bottom:20px;
+}
+
+.card h3{
+    margin-bottom:10px;
+    color:#2e7d32;
+}
+
+.value{
+    font-size:22px;
+    font-weight:700;
+}
+
+.green{ color:#2e7d32; }
+.red{ color:#c62828; }
+
+.back-btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:10px 22px;
+    background:#2e7d32;
+    color:white;
+    text-decoration:none;
+    border-radius:25px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h2>🏆 Rewards & Fines Summary</h2>
+    </div>
+
+    <div class="card">
+        <h3>Total Reward Points</h3>
+        <div class="value green">{{ total_points }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Clean Records</h3>
+        <div class="value green">{{ clean_count }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Violations</h3>
+        <div class="value red">{{ violation_count }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Total Fines (₹)</h3>
+        <div class="value red">{{ total_fines }}</div>
+    </div>
+
+    <a href="{{ url_for('household_dashboard') }}" class="back-btn">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>

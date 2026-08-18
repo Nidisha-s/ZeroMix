@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scan Household QR</title>
+
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <style>
+        body{
+            font-family:Segoe UI;
+            background:#f7f9f8;
+            text-align:center;
+            padding:40px;
+        }
+
+        h2{
+            color:#2e7d32;
+        }
+
+        #reader{
+            width:300px;
+            margin:auto;
+        }
+
+        button{
+            margin-top:15px;
+            padding:8px 16px;
+            background:#2e7d32;
+            color:white;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>Scan Household QR Code</h2>
+
+<div id="reader"></div>
+
+<form method="POST" id="qrForm">
+    <input type="hidden" name="qr_data" id="qr_data">
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+function onScanSuccess(decodedText, decodedResult) {
+
+    console.log("QR Code detected:", decodedText);
+
+    document.getElementById("qr_data").value = decodedText;
+
+    // Stop scanner after successful scan
+    html5QrcodeScanner.clear();
+
+    alert("QR Scanned Successfully!");
+
+}
+
+var html5QrcodeScanner = new Html5QrcodeScanner(
+    "reader",
+    { fps: 10, qrbox: 250 }
+);
+
+html5QrcodeScanner.render(onScanSuccess);
+</script>
+
+</body>
+</html>

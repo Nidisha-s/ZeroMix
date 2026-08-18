@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Scan Result</title>
+{% if type == "success" %}
+<meta http-equiv="refresh" content="2;url={{ url_for('worker_pending') }}">
+{% endif %}
+<style>
+body{
+    font-family:'Segoe UI', sans-serif;
+    background:#f7f9f8;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.card{
+    background:white;
+    padding:40px;
+    border-radius:16px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.08);
+    text-align:center;
+    width:420px;
+}
+
+.success{
+    color:#2e7d32;
+}
+
+.error{
+    color:#d32f2f;
+}
+
+h2{
+    margin-bottom:15px;
+}
+
+.btn{
+    margin-top:25px;
+    padding:10px 20px;
+    background:#2e7d32;
+    color:white;
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-block;
+}
+
+.btn:hover{
+    background:#1b5e20;
+}
+
+.timer{
+    margin-top:15px;
+    font-size:14px;
+    color:#777;
+}
+</style>
+
+<script>
+    // Auto redirect after 3 seconds
+    setTimeout(function(){
+        window.location.href = "{{ url_for('worker_dashboard') }}";
+    }, 5000);
+</script>
+
+</head>
+
+<body>
+
+<div class="card">
+
+    {% if type == "success" %}
+        <h2 class="success">Success ✅</h2>
+    {% else %}
+        <h2 class="error">Error ❌</h2>
+    {% endif %}
+
+    <p>{{ message }}</p>
+
+    <p class="timer">Redirecting to dashboard in 3 seconds...</p>
+
+    <a href="{{ url_for('worker_dashboard') }}" class="btn">
+        Go Now
+    </a>
+
+</div>
+{% if type == "success" %}
+<script>
+    setTimeout(function(){
+        {% if source == "pending" %}
+            window.location.href = "{{ url_for('worker_pending') }}";
+        {% else %}
+            window.location.href = "{{ url_for('worker_dashboard') }}";
+        {% endif %}
+    }, 2000);
+</script>
+{% endif %}
+</body>
+</html>

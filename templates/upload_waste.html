@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Waste | Zeromix</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI', sans-serif;
+        }
+
+        body{
+            background:#f7f9f8;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+
+        .container{
+            background:white;
+            width:420px;
+            padding:35px;
+            border-radius:16px;
+            box-shadow:0 15px 35px rgba(0,0,0,0.08);
+            text-align:center;
+        }
+
+        h2{
+            color:#2e7d32;
+            margin-bottom:20px;
+        }
+
+        .upload-box{
+            border:2px dashed #2e7d32;
+            padding:25px;
+            border-radius:12px;
+            margin-bottom:20px;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .upload-box:hover{
+            background:#f0f8f3;
+        }
+
+        input[type="file"]{
+            display:none;
+        }
+
+        .file-label{
+            color:#2e7d32;
+            font-weight:bold;
+            cursor:pointer;
+        }
+
+        .file-name{
+            margin-top:10px;
+            font-size:14px;
+            color:#555;
+        }
+
+        button{
+            margin-top:15px;
+            padding:12px 25px;
+            background:#2e7d32;
+            color:white;
+            border:none;
+            border-radius:25px;
+            font-size:14px;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        button:hover{
+            background:#1b5e20;
+        }
+
+        .back-link{
+            display:block;
+            margin-top:15px;
+            font-size:13px;
+            color:#777;
+            text-decoration:none;
+        }
+
+        .back-link:hover{
+            color:#2e7d32;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Upload Waste Image</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <div class="upload-box">
+            <label for="waste_image" class="file-label">
+                Click to Choose Waste Image
+            </label>
+            <input type="file" name="waste_image" id="waste_image" required>
+            <div class="file-name" id="fileName"></div>
+        </div>
+
+        <button type="submit">Analyze with AI</button>
+
+    </form>
+
+    <a href="{{ url_for('worker_dashboard') }}" class="back-link">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+<script>
+    const fileInput = document.getElementById("waste_image");
+    const fileName = document.getElementById("fileName");
+
+    fileInput.addEventListener("change", function(){
+        if(this.files.length > 0){
+            fileName.textContent = this.files[0].name;
+        }
+    });
+</script>
+
+</body>
+</html>

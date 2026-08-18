@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Zeromix | Household Dashboard</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+/* ===== Animated Background (Same as Worker) ===== */
+body{
+    background: linear-gradient(135deg,#d7f5e8,#e8f5ff,#f0ffe8);
+    background-size:300% 300%;
+    animation:bgMove 14s ease infinite;
+    color:#1f2d2a;
+}
+
+@keyframes bgMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* ===== Header (Glass Style like Worker) ===== */
+.header{
+    backdrop-filter: blur(14px);
+    background: rgba(255,255,255,0.55);
+    padding:18px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 8px 30px rgba(0,0,0,0.08);
+    position:sticky;
+    top:0;
+    z-index:10;
+    border-bottom:1px solid rgba(255,255,255,0.6);
+}
+
+.header h2{
+    font-size:22px;
+    background: linear-gradient(45deg,#2e7d32,#66bb6a);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+/* Header Right */
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+/* Logout */
+.logout-link{
+    text-decoration:none;
+    font-size:14px;
+    color:#1b5e20;
+    font-weight:600;
+    padding:8px 18px;
+    border-radius:20px;
+    background:rgba(46,125,50,0.12);
+    transition:.3s;
+}
+
+.logout-link:hover{
+    background:#2e7d32;
+    color:white;
+}
+
+/* Notification Button */
+.notification-btn{
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+    padding:8px 18px;
+    border-radius:20px;
+    background:rgba(46,125,50,0.12);
+    color:#1b5e20;
+    transition:.3s;
+    position:relative;
+}
+
+.notification-btn:hover{
+    background:#2e7d32;
+    color:white;
+}
+
+/* Badge */
+.badge{
+    background:#ff3b30;
+    color:white;
+    font-size:11px;
+    padding:3px 7px;
+    border-radius:50%;
+    margin-left:6px;
+}
+
+/* ===== Main ===== */
+.main{
+    max-width:1150px;
+    margin:20px auto;
+    padding:0 25px;
+}
+
+/* ===== Welcome Card (Same as Worker) ===== */
+.welcome{
+    background: linear-gradient(135deg,#2e7d32,#43a047);
+    color:white;
+    padding:25px;
+    border-radius:22px;
+    box-shadow:0 20px 50px rgba(46,125,50,0.35);
+    margin-bottom:30px;
+}
+
+.welcome h3{
+    margin-bottom:10px;
+    font-size:22px;
+}
+
+/* ===== Summary Boxes ===== */
+.summary{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:28px;
+    margin-bottom:40px;
+}
+
+.summary-box{
+    background: rgba(255,255,255,0.65);
+    backdrop-filter: blur(12px);
+    padding:30px;
+    border-radius:22px;
+    text-align:center;
+    box-shadow:0 12px 35px rgba(0,0,0,0.08);
+    transition:.35s;
+    border:1px solid rgba(255,255,255,0.6);
+}
+
+.summary-box:hover{
+    transform:translateY(-10px) scale(1.03);
+    box-shadow:0 25px 55px rgba(0,0,0,0.15);
+}
+
+.summary-box h4{
+    font-size:34px;
+    background: linear-gradient(45deg,#2e7d32,#81c784);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    margin-bottom:6px;
+}
+
+.summary-box p{
+    font-size:14px;
+    color:#444;
+}
+
+/* ===== Action Cards ===== */
+.actions{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:28px;
+}
+
+.action-card{
+    position:relative;
+    overflow:hidden;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(14px);
+    padding:32px;
+    border-radius:22px;
+    box-shadow:0 14px 40px rgba(0,0,0,0.1);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    transition:.35s;
+}
+
+.action-card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:5px;
+    background:linear-gradient(90deg,#2e7d32,#66bb6a,#a5d6a7);
+}
+
+.action-card:hover{
+    transform:translateY(-10px) scale(1.02);
+    box-shadow:0 25px 55px rgba(0,0,0,0.15);
+}
+
+.action-card h4{
+    color:#1b5e20;
+    margin-bottom:14px;
+    font-size:18px;
+}
+
+.action-card p{
+    font-size:14px;
+    color:#555;
+    margin-bottom:20px;
+}
+
+/* Buttons */
+.action-card button{
+    align-self:center;
+    padding:13px 28px;
+    border:none;
+    border-radius:30px;
+    font-size:14px;
+    cursor:pointer;
+    font-weight:600;
+    color:white;
+    background:linear-gradient(45deg,#2e7d32,#43a047);
+    transition:.3s;
+    box-shadow:0 8px 20px rgba(46,125,50,0.35);
+}
+
+.action-card button:hover{
+    transform:translateY(-3px) scale(1.05);
+    box-shadow:0 14px 30px rgba(46,125,50,0.5);
+}
+
+/* ===== Footer ===== */
+.footer{
+    text-align:center;
+    margin:70px 0 25px;
+    font-size:13px;
+    color:#2e7d32;
+    font-weight:500;
+}
+
+/* ===== Responsive ===== */
+@media (max-width:768px){
+    .header{
+        flex-direction:column;
+        gap:12px;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+    <h2>Zeromix | Household Dashboard</h2>
+
+    <div class="header-right">
+        <a href="{{ url_for('household_notifications') }}" class="notification-btn">
+            🔔 Notifications
+            {% if unread_count > 0 %}
+                <span class="badge">{{ unread_count }}</span>
+            {% endif %}
+        </a>
+
+        <a href="/logout" class="logout-link">Logout</a>
+    </div>
+</div>
+
+<div class="main">
+
+    <div class="welcome">
+        <h3>Welcome, Resident 🏠</h3>
+        <p>
+            Track your waste segregation record, rewards,
+            warnings, and stay updated with guidelines.
+        </p>
+    </div>
+
+    <div class="summary">
+        <div class="summary-box">
+			<h4>{{ total_collections }}</h4>
+			<p>Total Collections</p>
+		</div>
+
+		<div class="summary-box">
+			<h4>{{ warnings }}</h4>
+			<p>Warnings</p>
+		</div>
+
+		<div class="summary-box">
+			<h4>{{ reward_points }}</h4>
+			<p>Reward Points</p>
+		</div>
+
+    </div>
+
+    <div class="actions">
+
+        <div class="action-card">
+            <h4>View History</h4>
+            <p>See past waste verification records and images.</p>
+            <button onclick="window.location.href='{{ url_for('household_history') }}'">
+				View
+			</button>
+        </div>
+
+        <div class="action-card">
+            <h4>Segregation Guidelines</h4>
+            <p>Learn proper waste segregation rules.</p>
+            <button onclick="window.location.href='{{ url_for('household_guidelines') }}'">View Rules</button>
+        </div>
+
+        <div class="action-card">
+            <h4>Rewards & Fines</h4>
+            <p>Check your rewards earned or fines issued.</p>
+            <button onclick="window.location.href='{{ url_for('household_rewards') }}'">
+				View
+			</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="footer">
+    © 2026 Zeromix | Household Module
+</div>
+
+</body>
+</html>

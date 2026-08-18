@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Zeromix | Manage Households</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+body{
+    background:#f7f9f8;
+    color:#222;
+}
+
+.header{
+    background:#2e7d32;
+    color:white;
+    padding:20px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.header a{
+    color:white;
+    text-decoration:none;
+}
+
+.main{
+    max-width:1100px;
+    margin:40px auto;
+    padding:0 30px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:14px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    margin-bottom:30px;
+}
+
+.card h3{
+    margin-bottom:20px;
+    color:#2e7d32;
+}
+
+form input{
+    padding:8px;
+    border:1px solid #ccc;
+    border-radius:6px;
+}
+
+button{
+    padding:8px 14px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.add-btn{ background:#2e7d32; color:white; }
+.update-btn{ background:#1565c0; color:white; }
+.delete-btn{ background:#d32f2f; color:white; }
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th, td{
+    border:1px solid #eee;
+    padding:12px;
+    text-align:center;
+}
+
+th{
+    background:#2e7d32;
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h2>Zeromix | Manage Households</h2>
+    <a href="{{ url_for('admin_dash') }}">← Back to Dashboard</a>
+</div>
+
+<div class="main">
+
+    <div class="card">
+        <h3>Add New Household</h3>
+
+        <form method="POST">
+            <input type="hidden" name="action" value="add">
+
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="text" name="address" placeholder="Address" required>
+
+            <button type="submit" class="add-btn">Add Household</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>Existing Households</h3>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Address</th>
+                <th>QR</th>
+                <th>Action</th>
+                <th>Delete</th>
+            </tr>
+
+            {% for h in households %}
+            <tr>
+
+                <td>{{ h[0] }}</td>
+
+                {% if edit_id == h[0] %}
+                    <form method="POST">
+                        <input type="hidden" name="action" value="update">
+                        <input type="hidden" name="id" value="{{ h[0] }}">
+
+                        <td>
+                            <input type="text" name="username" value="{{ h[1] }}" required>
+                        </td>
+
+                        <td>
+                            <input type="text" name="address" value="{{ h[2] }}" required>
+                        </td>
+
+                        <td>
+                            <img src="{{ url_for('static', filename=h[3]) }}" width="60">
+                        </td>
+
+                        <td>
+                            <button type="submit" class="update-btn">Save</button>
+                            <a href="{{ url_for('household_admin.manage_households') }}">
+                                <button type="button">Cancel</button>
+                            </a>
+                        </td>
+                    </form>
+
+                    <td></td>
+
+                {% else %}
+
+                    <td>{{ h[1] }}</td>
+                    <td>{{ h[2] }}</td>
+
+                    <td>
+                        <img src="{{ url_for('static', filename=h[3]) }}" width="60">
+                    </td>
+
+                    <td>
+                        <a href="{{ url_for('household_admin.manage_households', edit=h[0]) }}">
+                            <button type="button" class="update-btn">Update</button>
+                        </a>
+                    </td>
+
+                    <td>
+                        <a href="{{ url_for('household_admin.delete_household', id=h[0]) }}">
+                            <button type="button" class="delete-btn">Delete</button>
+                        </a>
+                    </td>
+
+                {% endif %}
+
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

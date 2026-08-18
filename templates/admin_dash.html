@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Zeromix | Admin Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+/* ===== Animated Background ===== */
+body{
+    display:flex;
+    background:linear-gradient(135deg,#e6f7ef,#e3f2fd,#f1f8e9);
+    background-size:300% 300%;
+    animation:bgShift 16s ease infinite;
+}
+
+@keyframes bgShift{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+    width:260px;
+    min-height:100vh;
+    padding:28px 18px;
+    display:flex;
+    flex-direction:column;
+
+    background:linear-gradient(180deg,rgba(255,255,255,0.88),rgba(232,245,233,0.78));
+    backdrop-filter:blur(16px);
+    box-shadow:10px 0 35px rgba(0,0,0,0.10);
+    border-right:1px solid rgba(255,255,255,0.7);
+}
+
+/* ===== LOGO ===== */
+.logo-section{
+    text-align:center;
+    margin-bottom:30px;
+    padding-bottom:18px;
+    border-bottom:1px solid rgba(46,125,50,0.15);
+}
+
+.logo-img{
+    width:150px;
+    display:block;
+    margin:0 auto 10px auto;
+    filter:drop-shadow(0 6px 12px rgba(46,125,50,0.25));
+}
+
+/* ===== MENU ===== */
+.menu{
+    list-style:none;
+    width:100%;
+    overflow:hidden;
+}
+
+.menu li{
+    margin-bottom:12px;
+}
+
+/* menu links */
+.menu li a{
+    display:block;
+    width:100%;
+    text-decoration:none;
+    color:#2c3e35;
+    font-size:15px;
+    padding:13px 16px;
+    border-radius:16px;
+    font-weight:600;
+    letter-spacing:.3px;
+    transition:.3s;
+    position:relative;
+    box-sizing:border-box;
+}
+
+/* left accent bar */
+.menu li a::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:50%;
+    transform:translateY(-50%);
+    width:4px;
+    height:0%;
+    border-radius:4px;
+    background:#2e7d32;
+    transition:.25s;
+}
+
+/* hover */
+.menu li a:hover{
+    background:linear-gradient(90deg,#e8f5e9,#f1f8e9);
+    color:#1b5e20;
+    transform:translateX(4px);
+    box-shadow:0 8px 20px rgba(46,125,50,0.15);
+}
+
+.menu li a:hover::before{
+    height:60%;
+}
+
+/* ===== LOGOUT BUTTON FIX ===== */
+.logout-btn{
+    background:#ffecec;
+    color:#c62828 !important;
+    font-weight:700;
+    text-align:center;
+    border:1px solid #ffcdd2;
+    width:100%;
+    max-width:100%;
+}
+
+.logout-btn:hover{
+    background:#c62828;
+    color:white !important;
+    transform:none;
+    box-shadow:0 10px 25px rgba(198,40,40,0.35);
+}
+
+/* ===== MAIN AREA ===== */
+.main{
+    flex:1;
+    padding:45px;
+}
+
+/* ===== WELCOME CARD ===== */
+.welcome{
+    background:linear-gradient(135deg,#2e7d32,#66bb6a);
+    color:white;
+    padding:20px 30px;
+    border-radius:22px;
+    box-shadow:0 20px 50px rgba(46,125,50,0.35);
+    margin-bottom:30px;
+}
+
+.welcome h3{
+    font-size:22px;
+    margin-bottom:6px;
+}
+
+/* ===== STATS ===== */
+.stats{
+    display:grid;
+    grid-template-columns:repeat(5, 1fr); /* Exactly 5 in one row */
+    gap:26px;
+    margin-bottom:40px;
+}
+
+.stat-card{
+    background:rgba(255,255,255,0.78);
+    backdrop-filter:blur(14px);
+    padding:26px;
+    border-radius:20px;
+    box-shadow:0 14px 40px rgba(0,0,0,0.1);
+    transition:.35s;
+    border:1px solid rgba(255,255,255,0.6);
+}
+
+.stat-card:hover{
+    transform:translateY(-10px) scale(1.03);
+    box-shadow:0 30px 65px rgba(0,0,0,0.18);
+}
+
+.stat-card h4{
+    font-size:32px;
+    font-weight:800;
+    margin-bottom:6px;
+    background:linear-gradient(45deg,#2e7d32,#81c784);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.stat-card p{
+    font-size:14px;
+    color:#4e5d57;
+}
+
+/* ===== CHART GRID ===== */
+.charts-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+}
+
+/* ===== CHART CARD ===== */
+.chart-card{
+    background:rgba(255,255,255,0.85);
+    backdrop-filter:blur(14px);
+    padding:28px;
+    border-radius:22px;
+    box-shadow:0 16px 45px rgba(0,0,0,0.12);
+    height:380px;
+    display:flex;
+    flex-direction:column;
+    transition:.3s;
+}
+
+.chart-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 28px 60px rgba(0,0,0,0.18);
+}
+
+.chart-card h3{
+    margin-bottom:12px;
+    color:#1b5e20;
+    font-size:18px;
+    font-weight:700;
+}
+
+.chart-card canvas{
+    max-height:280px !important;
+}
+
+canvas{
+    margin-top:10px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:900px){
+    .charts-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media (max-width:700px){
+    .sidebar{
+        display:none;
+    }
+    .main{
+        padding:25px;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+    <div class="logo-section">
+        <img src="{{ url_for('static', filename='images/logonew.png') }}" class="logo-img">
+    </div>
+
+    <ul class="menu">
+        <li><a href="{{ url_for('household_admin.manage_households') }}">Manage Households</a></li>
+        <li><a href="{{ url_for('manage_workers') }}">Manage Workers</a></li>
+        <li><a href="{{ url_for('admin_reports') }}">AI Reports</a></li>
+        <li><a href="{{ url_for('rewards_fines') }}">Rewards & Fines</a></li>
+		<li><a href="{{ url_for('admin_issues') }}" class="dashboard-btn">Worker Issues</a></li>
+		<li><a href="{{ url_for('logout') }}" class="logout-btn">Logout</a></li>
+	</ul>
+
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <div class="welcome">
+        <h3>Welcome, Admin 👩‍💼</h3>
+        <p>Monitor waste verification and system analytics.</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+        <div class="stat-card">
+            <h4>{{ households }}</h4>
+            <p>Total Households</p>
+        </div>
+
+        <div class="stat-card">
+            <h4>{{ workers }}</h4>
+            <p>Active Workers</p>
+        </div>
+
+        <div class="stat-card">
+            <h4>{{ violations }}</h4>
+            <p>Total Violations</p>
+        </div>
+
+        <div class="stat-card">
+            <h4>{{ segregation_rate }}</h4>
+            <p>Segregation Rate</p>
+        </div>
+		
+		<div class="stat-card">
+			<h4>{{ total_issues }}</h4>
+			<p>Total Issues Reported</p>
+		</div>
+    </div>
+
+    <!-- BAR CHART -->
+    <div class="charts-grid">
+		<div class="chart-card">
+			<h3>Clean vs Violation</h3>
+			<canvas id="barChart"></canvas>
+		</div>
+
+		<div class="chart-card">
+			<h3>Daily Waste Trend</h3>
+			<canvas id="lineChart"></canvas>
+		</div>
+	</div>
+</div>
+
+<script>
+/* BAR CHART */
+const barCtx = document.getElementById('barChart');
+
+new Chart(barCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Clean', 'Violation'],
+        datasets: [{
+            label: 'Waste Records',
+            data: [{{ clean_count }}, {{ violations }}],
+            backgroundColor: ['#66bb6a', '#ef5350']
+        }]
+    },
+	options: {
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{
+        legend:{display:false}
+    }
+}
+});
+
+/* LINE CHART */
+const lineCtx = document.getElementById('lineChart');
+
+new Chart(lineCtx, {
+    type: 'line',
+    data: {
+        labels: {{ daily_labels | safe }},
+        datasets: [{
+            label: 'Violations Per Day',
+            data: {{ daily_counts | safe }},
+            borderColor: '#2e7d32',
+            backgroundColor: 'rgba(46,125,50,0.1)',
+            tension:0.4,
+            fill:true
+        }]
+    },
+    options:{
+    responsive:true,
+    maintainAspectRatio:false
+	}
+});
+</script>
+
+</body>
+</html>

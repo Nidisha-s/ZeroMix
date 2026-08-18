@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Waste Linked Successfully</title>
+    <style>
+        body{
+            font-family:Segoe UI;
+            background:#f7f9f8;
+            text-align:center;
+            padding:50px;
+        }
+
+        .card{
+            background:white;
+            padding:30px;
+            width:400px;
+            margin:auto;
+            border-radius:12px;
+            box-shadow:0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .clean{
+            color:green;
+            font-size:20px;
+            font-weight:bold;
+        }
+
+        .violation{
+            color:red;
+            font-size:20px;
+            font-weight:bold;
+        }
+
+        button{
+            margin-top:20px;
+            padding:10px 20px;
+            background:#2e7d32;
+            color:white;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+
+    <h2>Waste Linked Successfully ✅</h2>
+
+    {% if status == "Clean" %}
+        <p class="clean">Clean Waste Recorded</p>
+    {% else %}
+        <p class="violation">Violation Recorded</p>
+    {% endif %}
+
+    <a href="{{ url_for('worker_dashboard') }}">
+        <button>Back to Dashboard</button>
+    </a>
+
+</div>
+
+</body>
+</html>

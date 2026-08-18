@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Zeromix | Waste History</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+/* ===== Background ===== */
+body{
+    background:linear-gradient(135deg,#e6f7ef,#e3f2fd,#f1f8e9);
+    background-size:300% 300%;
+    animation:bgShift 15s ease infinite;
+    padding:40px;
+    color:#1f2d2a;
+}
+
+@keyframes bgShift{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.history-container{
+    max-width:1100px;
+    margin:auto;
+}
+
+.page-header{
+    background:linear-gradient(135deg,#2e7d32,#66bb6a);
+    color:white;
+    padding:28px;
+    border-radius:20px;
+    margin-bottom:30px;
+    box-shadow:0 20px 50px rgba(46,125,50,0.35);
+}
+
+.page-header h2{
+    font-size:22px;
+}
+
+.table-card{
+    background:rgba(255,255,255,0.85);
+    backdrop-filter:blur(14px);
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 15px 45px rgba(0,0,0,0.12);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    text-align:left;
+    padding:14px;
+    font-size:14px;
+    background:rgba(46,125,50,0.08);
+    color:#2e7d32;
+    font-weight:700;
+    border-bottom:2px solid #e0e0e0;
+}
+
+td{
+    padding:14px;
+    font-size:14px;
+    border-bottom:1px solid #eaeaea;
+}
+
+tr:hover{
+    background:rgba(46,125,50,0.04);
+}
+
+td img{
+    width:70px;
+    height:70px;
+    object-fit:cover;
+    border-radius:12px;
+    box-shadow:0 6px 15px rgba(0,0,0,0.15);
+}
+
+.result-clean{
+    color:#2e7d32;
+    font-weight:700;
+}
+
+.result-violation{
+    color:#c62828;
+    font-weight:700;
+}
+
+.empty-state{
+    text-align:center;
+    padding:40px;
+    color:#666;
+}
+
+.back-btn{
+    display:inline-block;
+    margin-top:25px;
+    padding:10px 22px;
+    background:linear-gradient(45deg,#2e7d32,#43a047);
+    color:white;
+    text-decoration:none;
+    border-radius:30px;
+    font-weight:600;
+    box-shadow:0 8px 20px rgba(46,125,50,0.35);
+    transition:.3s;
+}
+
+.back-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 15px 35px rgba(46,125,50,0.5);
+}
+
+@media(max-width:768px){
+    table, thead, tbody, th, td, tr{
+        display:block;
+    }
+
+    thead{
+        display:none;
+    }
+
+    tr{
+        margin-bottom:20px;
+        background:white;
+        padding:15px;
+        border-radius:15px;
+        box-shadow:0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    td{
+        border:none;
+        padding:8px 0;
+    }
+
+    td img{
+        margin-top:10px;
+    }
+}
+
+.view-btn{
+    padding:8px 16px;
+    background:linear-gradient(45deg,#2e7d32,#43a047);
+    color:white;
+    text-decoration:none;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+    box-shadow:0 6px 15px rgba(46,125,50,0.35);
+    transition:.3s;
+}
+
+.view-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 20px rgba(46,125,50,0.5);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="history-container">
+
+    <div class="page-header">
+        <h2>Your Waste Verification History 🏠</h2>
+    </div>
+
+    <div class="table-card">
+
+        {% if records %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Image</th>
+                    <th>Result</th>
+                    <th>Points</th>
+                    <th>Fine (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+
+                    <!-- ✅ UPDATED -->
+                    <td>{{ record.created_at }}</td>
+
+                    <td>
+						<a href="{{ url_for('static', filename=record.image_path) }}" target="_blank" class="view-btn">
+							View Image 🔍
+						</a>
+					</td>
+
+
+                    <td>
+                        {% if record.status == "Clean" %}
+                            <span class="result-clean">Clean ✅</span>
+                        {% else %}
+                            <span class="result-violation">Violation ❌</span>
+                        {% endif %}
+                    </td>
+
+                    <!-- ✅ UPDATED -->
+                    <td>{{ record.reward_points or 0 }}</td>
+                    <td>{{ record.fine_amount or 0 }}</td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% else %}
+            <div class="empty-state">
+                <p>No waste records found yet.</p>
+            </div>
+        {% endif %}
+
+        <a href="{{ url_for('household_dashboard') }}" class="back-btn">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

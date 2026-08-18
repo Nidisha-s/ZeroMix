@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notifications | Zeromix</title>
+
+    <style>
+        body {
+            font-family:'Segoe UI', sans-serif;
+            background:#f4f6f9;
+            margin:0;
+        }
+
+        .container {
+            width:80%;
+            margin:50px auto;
+        }
+
+        h2 {
+            color:#2f6b2f;
+            margin-bottom:25px;
+        }
+
+        .card {
+            background:white;
+            padding:20px;
+            border-radius:12px;
+            box-shadow:0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom:18px;
+            transition:0.3s ease;
+        }
+
+        .card:hover {
+            transform:translateY(-3px);
+        }
+
+        /* UNREAD */
+        .unread {
+            border-left:6px solid #dc3545;
+            background:#fff9f9;
+        }
+
+        /* READ */
+        .read {
+            border-left:6px solid #28a745;
+            opacity:0.85;
+        }
+
+        .message {
+            font-size:15px;
+            margin-bottom:6px;
+        }
+
+        .date {
+            font-size:12px;
+            color:#777;
+            margin-top:5px;
+        }
+
+        .btn-read {
+            background:#2f6b2f;
+            color:white;
+            padding:6px 14px;
+            border:none;
+            border-radius:20px;
+            cursor:pointer;
+            margin-top:10px;
+            font-size:13px;
+            transition:0.2s;
+        }
+
+        .btn-read:hover {
+            background:#1b5e20;
+        }
+
+        .empty {
+            background:white;
+            padding:30px;
+            border-radius:12px;
+            text-align:center;
+            box-shadow:0 4px 15px rgba(0,0,0,0.08);
+            color:#666;
+        }
+
+        .back-btn {
+            display:inline-block;
+            margin-bottom:20px;
+            text-decoration:none;
+            color:#2f6b2f;
+            font-weight:500;
+        }
+
+        .back-btn:hover {
+            text-decoration:underline;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <a href="{{ url_for('household_dashboard') }}" class="back-btn">
+        ← Back to Dashboard
+    </a>
+
+    <h2>🔔 Your Notifications</h2>
+
+    {% if notifications %}
+
+        {% for note in notifications %}
+            <div class="card {% if note[2] %}read{% else %}unread{% endif %}">
+
+                <div class="message">
+                    {{ note[1] }}
+                </div>
+
+                <div class="date">
+                    {{ note[3] }}
+                </div>
+
+                {% if not note[2] %}
+                <form method="POST" action="{{ url_for('mark_notification_read', id=note[0]) }}">
+                    <button type="submit" class="btn-read">
+                        Mark as Read
+                    </button>
+                </form>
+                {% endif %}
+
+            </div>
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+            🎉 No notifications available.
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

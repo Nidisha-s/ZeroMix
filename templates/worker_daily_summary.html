@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Work Summary | Zeromix</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f6f9;
+        }
+
+        .container {
+            width: 85%;
+            margin: 50px auto;
+        }
+
+        h2 {
+            color: #2f6b2f;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            color: #2f6b2f;
+            margin-top: 40px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .value {
+            font-size: 26px;
+            font-weight: 600;
+            color: #2f6b2f;
+        }
+
+        .label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .progress-bar {
+            height: 22px;
+            background: #e5e5e5;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill-today {
+            height: 100%;
+            background: #2f6b2f;
+            width: {{ today_performance }}%;
+        }
+
+        .progress-fill-overall {
+            height: 100%;
+            background: #1f4e1f;
+            width: {{ overall_performance }}%;
+        }
+
+        .box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #2f6b2f;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <a href="{{ url_for('worker_dashboard') }}" class="back-link">
+        ← Back to Dashboard
+    </a>
+
+    <!-- TODAY SUMMARY -->
+    <h2>Today's Summary</h2>
+
+    <div class="grid">
+        <div class="card">
+            <div class="value">{{ today_total }}</div>
+            <div class="label">Total Uploads</div>
+        </div>
+
+        <div class="card">
+            <div class="value">{{ today_clean }}</div>
+            <div class="label">Clean</div>
+        </div>
+
+        <div class="card">
+            <div class="value">{{ today_violation }}</div>
+            <div class="label">Violations</div>
+        </div>
+
+        <div class="card">
+            <div class="value">{{ today_performance }}%</div>
+            <div class="label">Performance</div>
+        </div>
+    </div>
+
+    <div class="box">
+        <strong>Today's Efficiency</strong>
+        <div class="progress-bar">
+            <div class="progress-fill-today"></div>
+        </div>
+    </div>
+
+
+    <!-- OVERALL SUMMARY -->
+    <h3>Overall Performance</h3>
+
+    <div class="grid">
+        <div class="card">
+            <div class="value">{{ overall_total }}</div>
+            <div class="label">Total Uploads</div>
+        </div>
+
+        <div class="card">
+            <div class="value">{{ overall_clean }}</div>
+            <div class="label">Total Clean</div>
+        </div>
+
+        <div class="card">
+            <div class="value">{{ overall_violation }}</div>
+            <div class="label">Total Violations</div>
+        </div>
+
+        <div class="card">
+            <div class="value">{{ overall_performance }}%</div>
+            <div class="label">Overall Performance</div>
+        </div>
+    </div>
+
+    <div class="box">
+        <strong>Overall Efficiency</strong>
+        <div class="progress-bar">
+            <div class="progress-fill-overall"></div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Zeromix | Household Segregation Rules</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI', sans-serif;
+}
+
+/* ===== Animated Background ===== */
+body{
+    background: linear-gradient(135deg,#e6f7ef,#e3f2fd,#f1f8e9);
+    background-size:300% 300%;
+    animation:bgShift 15s ease infinite;
+}
+
+@keyframes bgShift{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* ===== Header ===== */
+.header{
+    background:linear-gradient(90deg,#2e7d32,#43a047);
+    color:white;
+    padding:22px 42px;
+    display:flex;
+    justify-content:space-between;
+    text-align: center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.15);
+}
+
+.header h2{
+    font-size:20px;
+    font-weight:700;
+}
+
+/* Header Back Button */
+.header-back{
+    text-decoration:none;
+    color:white;
+    font-weight:600;
+    font-size:14px;
+    padding:8px 16px;
+    border-radius:22px;
+    background:rgba(255,255,255,0.18);
+    transition:.25s;
+}
+
+.header-back:hover{
+    background:rgba(255,255,255,0.32);
+    transform:translateY(-1px);
+}
+
+/* ===== Layout Width (Smaller) ===== */
+.main{
+    max-width:620px;
+    margin:40px auto;
+    padding:0 16px;
+}
+
+/* ===== Section Cards ===== */
+.section{
+    background:rgba(255,255,255,0.92);
+    backdrop-filter:blur(12px);
+    padding:22px;
+    border-radius:18px;
+    box-shadow:0 16px 40px rgba(0,0,0,0.14);
+    margin-bottom:20px;
+}
+
+.section h3{
+    color:#1b5e20;
+    margin-bottom:12px;
+    font-size:18px;
+}
+
+/* ===== Lists ===== */
+.section ul{
+    line-height:1.9;
+    font-size:14.5px;
+    color:#444;
+    padding-left:18px;
+}
+
+.section li{
+    margin-bottom:6px;
+}
+
+/* ===== Special Section Colors ===== */
+.do{
+    background:linear-gradient(135deg,#e8f5e9,#c8e6c9);
+}
+
+.dont{
+    background:linear-gradient(135deg,#ffebee,#ffcdd2);
+}
+
+/* ===== Responsive ===== */
+@media (max-width:600px){
+    .header{
+        padding:18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== Header ===== -->
+<div class="header">
+    <h2>Zeromix | Household Rules</h2>
+    <a href="javascript:history.back()" class="header-back">← Back</a>
+</div>
+
+<!-- ===== Content ===== -->
+<div class="main">
+
+<!-- RULES -->
+<div class="section">
+<h3>Household Waste Segregation Rules</h3>
+<ul>
+<li>Separate wet and dry waste every day</li>
+<li>Use green bin for food and kitchen waste</li>
+<li>Use blue bin for plastic, paper, metal, glass</li>
+<li>Do not mix plastic with wet waste</li>
+<li>Clean containers before dry disposal</li>
+<li>Keep batteries and medicines separate</li>
+<li>Give only segregated waste to collector</li>
+<li>Show your household QR code during pickup</li>
+<li>Proper segregation earns reward points</li>
+<li>Repeated mixing may lead to fines</li>
+</ul>
+</div>
+
+<!-- DO -->
+<div class="section do">
+<h3>Do ✅</h3>
+<ul>
+<li>Use two bins at home</li>
+<li>Segregate waste daily</li>
+<li>Keep dry waste clean and dry</li>
+<li>Follow bin color codes</li>
+</ul>
+</div>
+
+<!-- DON'T -->
+<div class="section dont">
+<h3>Don’t ❌</h3>
+<ul>
+<li>Mix food and plastic waste</li>
+<li>Pour liquids into dry waste bin</li>
+<li>Hide mixed waste</li>
+<li>Skip QR code during collection</li>
+</ul>
+</div>
+
+</div>
+
+</body>
+</html>

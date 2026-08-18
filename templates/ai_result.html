@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Waste Analysis</title>
+
+    <style>
+        body{
+            font-family:Segoe UI;
+            background:#f7f9f8;
+            text-align:center;
+            padding:40px;
+        }
+
+        h2{
+            color:#2e7d32;
+        }
+
+        .card{
+            background:white;
+            padding:30px;
+            width:400px;
+            margin:auto;
+            border-radius:12px;
+            box-shadow:0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        img{
+            width:100%;
+            border-radius:10px;
+            margin-bottom:15px;
+        }
+
+        .clean{
+            color:green;
+            font-weight:bold;
+            font-size:20px;
+        }
+
+        .violation{
+            color:red;
+            font-weight:bold;
+            font-size:20px;
+        }
+
+        button{
+            margin-top:20px;
+            padding:10px 18px;
+            background:#2e7d32;
+            color:white;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>AI Waste Analysis Result</h2>
+
+<div class="card">
+
+    <img src="{{ url_for('static', filename=image_path) }}">
+
+    {% if status == "Clean" %}
+        <p class="clean">Clean Waste Detected ✅</p>
+        <p>Only organic waste detected. No mixed materials found.</p>
+    {% else %}
+        <p class="violation">Mixed Waste Detected ❌</p>
+        <p>Plastic or synthetic materials detected along with wet waste.</p>
+    {% endif %}
+
+    <a href="{{ url_for('scan_qr') }}">
+        <button>Proceed to Scan Household QR</button>
+    </a>
+
+</div>
+
+</body>
+</html>

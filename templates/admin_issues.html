@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Worker Issues | Zeromix</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f6f9;
+        }
+
+        .container {
+            width: 90%;
+            margin: 40px auto;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: #2f6b2f;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        h2 {
+            color: #2f6b2f;
+            margin: 0;
+        }
+
+        .issue-count {
+            background-color: #2f6b2f;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 14px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #2f6b2f;
+            color: white;
+            padding: 14px;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .issue-type {
+            background-color: #ffeeba;
+            color: #856404;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .date-text {
+            color: #777;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <a href="{{ url_for('admin_dash') }}" class="back-link">
+        ← Back to Dashboard
+    </a>
+
+    <div class="top-section">
+        <h2>Worker Reported Issues</h2>
+
+        {% if issues %}
+        <div class="issue-count">
+            {{ issues|length }} Total
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="card">
+
+        {% if issues and issues|length > 0 %}
+
+        <table>
+            <thead>
+				<tr>
+					<th>ID</th>
+					<th>Worker</th>
+					<th>Household</th>
+					<th>Issue Type</th>
+					<th>Description</th>
+					<th>Status</th>
+					<th>Action</th>
+					<th>Reported At</th>
+				</tr>
+			</thead>
+
+			<tbody>
+			{% for issue in issues %}
+			<tr>
+				<td>{{ issue[0] }}</td>
+				<td>{{ issue[1] }}</td>
+				<td>{{ issue[2] }}</td>
+
+				<td>
+					<span class="issue-type">
+						{{ issue[3] }}
+					</span>
+				</td>
+
+				<td>{{ issue[4] }}</td>
+
+				<td>
+					{% if issue[5] == "Open" %}
+						<span style="background:#fff3cd; color:#856404; padding:6px 14px; border-radius:20px;">
+							Open
+						</span>
+					{% else %}
+						<span style="background:#d4edda; color:#155724; padding:6px 14px; border-radius:20px;">
+							Resolved
+						</span>
+					{% endif %}
+				</td>
+
+				<td>
+					{% if issue[5] == "Open" %}
+						<a href="{{ url_for('resolve_issue', id=issue[0]) }}" style="background:#2f6b2f; color:white; padding:6px 14px; border-radius:20px; text-decoration:none;">
+							Notify
+						</a>
+					{% else %}
+						—
+					{% endif %}
+				</td>
+
+				<td>{{ issue[6] }}</td>
+			</tr>
+			{% endfor %}
+			</tbody>
+        </table>
+
+        {% else %}
+			<div class="empty-state">
+            🎉 No issues reported yet.
+			</div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
