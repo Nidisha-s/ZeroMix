@@ -156,26 +156,6 @@ QR codes are generated using the Python `qrcode` library.
 
 ---
 
-## 📊 Main Features
-
-- 🤖 AI-based waste image verification
-- 📷 Waste image upload
-- 📱 Household QR code generation and scanning
-- 👥 Role-based authentication
-- 🏠 Household management
-- 👷 Worker management
-- 📍 Worker area assignment
-- ⚠️ Warning and fine system
-- 🎁 Reward points system
-- 📈 Admin dashboard analytics
-- 📋 Waste reports
-- 📊 Worker performance tracking
-- 🔔 Household notifications
-- 📝 Worker issue reporting
-- 📚 Waste segregation guidelines
-
----
-
 ## 📸 Application Screenshots
 
 ### 🏠 Homepage
